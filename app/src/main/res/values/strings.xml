@@ -1,0 +1,9 @@
+<resources>
+    <string-array name="spinner_items">
+        <item>Bubble Sort</item>
+        <item>Selection Sort</item>
+        <item>Insertion Sort</item>
+        <item>Noob Sort</item>
+    </string-array>
+    <string name="app_name">Sorting Algorithms</string>
+</resources>
