@@ -1,4 +1,4 @@
-package com.example.sortingalgorithms
+package com.example.sortingalgorithms.presentation.selectionsort
 
 import android.content.RestrictionEntry
 import android.graphics.Color
@@ -6,30 +6,34 @@ import android.text.InputType
 import android.util.Log
 import android.widget.EditText
 import android.widget.TextView
+import com.example.sortingalgorithms.utils.extensions.SortCompletionListener
 
-class SelectionSort(var editTextViewList:ArrayList<EditText>):Thread() {
+class SelectionSort(
+    private var editTextViewList:ArrayList<EditText>,
+    private val completionListener: SortCompletionListener
+):Thread() {
     override fun run() {
-        var x = editTextViewList.size
+        val x = editTextViewList.size
         //disabling editText functionalities during the sorting
-        for(i in (0..x-1)){
+        for(i in (0 until x)){
             editTextViewList[i].isFocusable = true
             editTextViewList[i].isFocusableInTouchMode = false
             editTextViewList[i].inputType = RestrictionEntry.TYPE_NULL
         }
-        for(i in (0..(x-1))){
+        for(i in (0 until x)){
             var smallestValue:Int = Integer.MAX_VALUE
             var locationOfMin:Int = i
-            for(j in (i..(x-1))){
+            for(j in (i until x)){
                 editTextViewList[j].setBackgroundColor(Color.parseColor("#00FF00"))
                 //fetching numbers from editText views
-                Thread.sleep(800)
-                var currentValue = Integer.parseInt(editTextViewList[j].text.toString())
+                Thread.sleep(400)
+                val currentValue = Integer.parseInt(editTextViewList[j].text.toString())
                 if(currentValue < smallestValue){
                     editTextViewList[locationOfMin].setBackgroundColor(Color.parseColor("#1313AF"))
                     smallestValue = currentValue
                     locationOfMin = j
                     editTextViewList[locationOfMin].setBackgroundColor(Color.parseColor("#231709"))
-                    Thread.sleep(800)
+                    Thread.sleep(400)
                 }
                 else{
                     editTextViewList[j].setBackgroundColor(Color.parseColor("#1313AF"))
@@ -39,22 +43,23 @@ class SelectionSort(var editTextViewList:ArrayList<EditText>):Thread() {
             for(k in (i..locationOfMin-1)){
                 swapTextViewsLocations(editTextViewList[k],editTextViewList[k+1])
             }
-            var tempEditText:EditText = editTextViewList[locationOfMin]
+            val tempEditText:EditText = editTextViewList[locationOfMin]
             editTextViewList.removeAt(locationOfMin)
             editTextViewList.add(i,tempEditText)
         }
         //reassigning editText functionalities and putting original colors back
-        for(i in (0..x-1)){
+        for(i in (0 until x)){
             editTextViewList[i].isFocusableInTouchMode = true
             editTextViewList[i].inputType = InputType.TYPE_CLASS_NUMBER
             editTextViewList[i].setBackgroundColor(Color.parseColor("#1313AF"))
         }
+        completionListener.onSortCompleted()
     }
-    fun swapTextViewsLocations(editTextView:EditText, editTextView2:EditText){
+    private fun swapTextViewsLocations(editTextView:EditText, editTextView2:EditText){
         Log.i("location"," pre textView location: " + editTextView.x +"," +editTextView.y)
         Log.i("location"," pre textView2 location: " + editTextView2.x +"," +editTextView2.y)
-        var tempX = editTextView.x
-        var tempY = editTextView.y
+        val tempX = editTextView.x
+        val tempY = editTextView.y
         editTextView.x = editTextView2.x
         editTextView.y = editTextView2.y
         editTextView2.x = tempX

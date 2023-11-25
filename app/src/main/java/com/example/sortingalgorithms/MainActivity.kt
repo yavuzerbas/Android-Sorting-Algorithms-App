@@ -4,14 +4,34 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.*
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+import com.example.sortingalgorithms.presentation.bubblesort.BubbleSort
+import com.example.sortingalgorithms.presentation.insertionsort.InsertionSort
+import com.example.sortingalgorithms.presentation.noobsort.NoobSort
+import com.example.sortingalgorithms.presentation.selectionsort.SelectionSort
+import com.example.sortingalgorithms.utils.extensions.SortCompletionListener
 
-class MainActivity : AppCompatActivity(){
+class MainActivity : AppCompatActivity(), SortCompletionListener{
     //var recursiveSortFragment:RecursiveSortFragment = RecursiveSortFragment()//Getting editText views
+    //connection views with xml ids
+    private lateinit var buttonStartSorting:Button
+    private lateinit var buttonRandomizeNumbers:Button
+    private val isSortingCompleted = MutableLiveData<Boolean>()
     override fun onCreate(savedInstanceState: Bundle?) {
-
-        var isSortInProgress:Boolean = false //if sorting in progress
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        isSortingCompleted.observe(this, Observer { isCompleted ->
+            if (isCompleted) {
+                buttonRandomizeNumbers.isEnabled = true
+                buttonStartSorting.isEnabled = true
+            }
+            else{
+                buttonRandomizeNumbers.isEnabled = false
+                buttonStartSorting.isEnabled = false
+            }
+        })
+
         var editTextViews:ArrayList<EditText> = ArrayList()
         val editText1 = findViewById<EditText>(R.id.editText1)
         val editText2 = findViewById<EditText>(R.id.editText2)
@@ -33,25 +53,23 @@ class MainActivity : AppCompatActivity(){
 
 
         val spinner:Spinner = findViewById(R.id.spinner)
-
-        //connection views with xml ids
-        val buttonStartSorting:Button = findViewById(R.id.buttonStartSorting)
-        val buttonRandomizeNumbers:Button = findViewById(R.id.buttonRandomizeNumbers)
-
+        buttonStartSorting = findViewById(R.id.buttonStartSorting)
+        buttonRandomizeNumbers = findViewById(R.id.buttonRandomizeNumbers)
 
         buttonStartSorting.setOnClickListener(View.OnClickListener {
             //Bubble Sort is selected in spinner
-            if(spinner.selectedItem.toString().equals("Noob Sort")){
-                NoobSort(editTextViews).start()
+            isSortingCompleted.postValue(false)
+            if(spinner.selectedItem.toString() == "Noob Sort"){
+                NoobSort(editTextViews,this).start()
             }
-            else if(spinner.selectedItem.toString().equals("Selection Sort")){
-                SelectionSort(editTextViews).start()
+            else if(spinner.selectedItem.toString() == "Selection Sort"){
+                SelectionSort(editTextViews,this).start()
             }
-            else if(spinner.selectedItem.toString().equals("Insertion Sort")){
-                InsertionSort(editTextViews).start()
+            else if(spinner.selectedItem.toString() == "Insertion Sort"){
+                InsertionSort(editTextViews,this).start()
             }
-            else if(spinner.selectedItem.toString().equals("Bubble Sort")){
-                BubbleSort(editTextViews).start()
+            else if(spinner.selectedItem.toString() == "Bubble Sort"){
+                BubbleSort(editTextViews,this).start()
             }
 
             else{
@@ -123,6 +141,10 @@ class MainActivity : AppCompatActivity(){
     fun rand(start: Int, end: Int): Int {
         require(start <= end) { "Illegal Argument" }
         return (start..end).random()
+    }
+
+    override fun onSortCompleted() {
+        isSortingCompleted.postValue(true)
     }
 }
 /*
