@@ -6,7 +6,9 @@ import android.text.InputType
 import android.util.Log
 import android.widget.EditText
 import android.widget.Toast
+import com.example.sortingalgorithms.utils.constants.MS5
 import com.example.sortingalgorithms.utils.extensions.SortCompletionListener
+import com.example.sortingalgorithms.utils.extensions.Speed
 
 class InsertionSort
     (
@@ -30,10 +32,10 @@ class InsertionSort
                 //setting colours to greens to show user which numbers are compared
                 editTextViewList[i].setBackgroundColor(Color.parseColor("#00FF00"))
                 editTextViewList[j].setBackgroundColor(Color.parseColor("#00FF00"))
-                Thread.sleep(500)
+                Thread.sleep((MS5 / Speed.speed).toLong())
                 if (j == i) {
                     editTextViewList[j].setBackgroundColor(Color.parseColor("#FF0000"))
-                    Thread.sleep(500)
+                    Thread.sleep((MS5 / Speed.speed).toLong())
                     editTextViewList[j].setBackgroundColor(Color.parseColor("#1313AF"))
                 } else if (a < b) {
                     //setting color to red to show user inserted number
@@ -49,7 +51,7 @@ class InsertionSort
                         editTextViewList.add(k - 1, tempEditText)
                         k--
                     }
-                    Thread.sleep(500)
+                    Thread.sleep((MS5 / Speed.speed).toLong())
                     //setting color to initial value
                     editTextViewList[k].setBackgroundColor(Color.parseColor("#1313AF"))
 

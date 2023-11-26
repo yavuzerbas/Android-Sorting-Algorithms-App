@@ -6,7 +6,9 @@ import android.text.InputType
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import com.example.sortingalgorithms.utils.constants.MS5
 import com.example.sortingalgorithms.utils.extensions.SortCompletionListener
+import com.example.sortingalgorithms.utils.extensions.Speed
 
 class BubbleSort(
     private var editTextViewList: ArrayList<EditText>,
@@ -34,7 +36,7 @@ class BubbleSort(
                 val a = Integer.parseInt(editTextViewList[j].text.toString())
                 val b = Integer.parseInt(editTextViewList[j + 1].text.toString())
                 //giving user some time to see which numbers compared
-                Thread.sleep(500)
+                Thread.sleep((MS5 / Speed.speed).toLong())
                 if (a > b) {
                     isSorted = false
                     //setting colors to red to show user, numbers are gonna swapped
@@ -47,7 +49,7 @@ class BubbleSort(
                     //swapping in screen
                     swapTextViewsLocations(editTextViewList[j], editTextViewList[j + 1])
                     //giving user enough time see the swapping
-                    Thread.sleep(500)
+                    Thread.sleep((MS5 / Speed.speed).toLong())
                 } else {
                     //do nothing
                 }

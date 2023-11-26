@@ -6,7 +6,10 @@ import android.text.InputType
 import android.util.Log
 import android.widget.EditText
 import android.widget.TextView
+import com.example.sortingalgorithms.utils.constants.MS0
+import com.example.sortingalgorithms.utils.constants.MS5
 import com.example.sortingalgorithms.utils.extensions.SortCompletionListener
+import com.example.sortingalgorithms.utils.extensions.Speed
 import java.lang.Exception
 import java.text.ParseException
 
@@ -32,7 +35,7 @@ class NoobSort(
                 val a = Integer.parseInt(editTextViewList[i].text.toString())
                 val b = Integer.parseInt(editTextViewList[j].text.toString())
                 //giving user some time to see which numbers compared
-                Thread.sleep(450)
+                Thread.sleep((MS5 / Speed.speed).toLong())
                 if (a > b) {
                     //setting colors to red to show user, numbers are gonna swapped
                     editTextViewList[i].setBackgroundColor(Color.parseColor("#FF0000"))
@@ -44,9 +47,9 @@ class NoobSort(
                     //swapping in screen
                     swapTextViewsLocations(editTextViewList[i], editTextViewList[j])
                     //giving user enough time see the swapping
-                    Thread.sleep(550)
+                    Thread.sleep((MS5 / Speed.speed).toLong())
                 } else {
-                    Thread.sleep(50)
+                    Thread.sleep((MS0 / Speed.speed).toLong())
                 }
                 //setting colors to initials
                 editTextViewList[i].setBackgroundColor(Color.parseColor("#1313AF"))

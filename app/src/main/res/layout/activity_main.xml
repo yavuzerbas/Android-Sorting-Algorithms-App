@@ -6,6 +6,30 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:background="#BCA0DC">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sorting_algorithms"
+            android:textColor="@android:color/white"
+            android:layout_gravity="start"/>
+
+        <Spinner
+            android:id="@+id/speed_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/speed_array"
+            android:layout_gravity="end"/>
+
+    </androidx.appcompat.widget.Toolbar>
+
 
     <LinearLayout
         android:gravity="center_vertical"

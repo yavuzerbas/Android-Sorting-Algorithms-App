@@ -6,4 +6,5 @@
         <item>Noob Sort</item>
     </string-array>
     <string name="app_name">Sorting Algorithms</string>
+    <string name="sorting_algorithms">Sorting Algorithms</string>
 </resources>

@@ -6,7 +6,10 @@ import android.text.InputType
 import android.util.Log
 import android.widget.EditText
 import android.widget.TextView
+import com.example.sortingalgorithms.utils.constants.MS4
+import com.example.sortingalgorithms.utils.constants.MS5
 import com.example.sortingalgorithms.utils.extensions.SortCompletionListener
+import com.example.sortingalgorithms.utils.extensions.Speed
 
 class SelectionSort(
     private var editTextViewList:ArrayList<EditText>,
@@ -26,21 +29,21 @@ class SelectionSort(
             for(j in (i until x)){
                 editTextViewList[j].setBackgroundColor(Color.parseColor("#00FF00"))
                 //fetching numbers from editText views
-                Thread.sleep(400)
+                Thread.sleep((MS4 / Speed.speed).toLong())
                 val currentValue = Integer.parseInt(editTextViewList[j].text.toString())
                 if(currentValue < smallestValue){
                     editTextViewList[locationOfMin].setBackgroundColor(Color.parseColor("#1313AF"))
                     smallestValue = currentValue
                     locationOfMin = j
                     editTextViewList[locationOfMin].setBackgroundColor(Color.parseColor("#231709"))
-                    Thread.sleep(400)
+                    Thread.sleep((MS4 / Speed.speed).toLong())
                 }
                 else{
                     editTextViewList[j].setBackgroundColor(Color.parseColor("#1313AF"))
                 }
 
             }
-            for(k in (i..locationOfMin-1)){
+            for(k in (i until locationOfMin)){
                 swapTextViewsLocations(editTextViewList[k],editTextViewList[k+1])
             }
             val tempEditText:EditText = editTextViewList[locationOfMin]

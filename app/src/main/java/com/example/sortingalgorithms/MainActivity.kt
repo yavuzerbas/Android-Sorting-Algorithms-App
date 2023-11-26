@@ -1,9 +1,18 @@
 package com.example.sortingalgorithms
 
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Color
 import android.os.Bundle
+import android.view.Menu
 import android.view.View
-import android.widget.*
+import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Spinner
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.example.sortingalgorithms.presentation.bubblesort.BubbleSort
@@ -11,9 +20,10 @@ import com.example.sortingalgorithms.presentation.insertionsort.InsertionSort
 import com.example.sortingalgorithms.presentation.noobsort.NoobSort
 import com.example.sortingalgorithms.presentation.selectionsort.SelectionSort
 import com.example.sortingalgorithms.utils.extensions.SortCompletionListener
+import com.example.sortingalgorithms.utils.extensions.Speed
+
 
 class MainActivity : AppCompatActivity(), SortCompletionListener{
-    //var recursiveSortFragment:RecursiveSortFragment = RecursiveSortFragment()//Getting editText views
     //connection views with xml ids
     private lateinit var buttonStartSorting:Button
     private lateinit var buttonRandomizeNumbers:Button
@@ -35,7 +45,7 @@ class MainActivity : AppCompatActivity(), SortCompletionListener{
             }
         })
 
-        var editTextViews:ArrayList<EditText> = ArrayList()
+        val editTextViews:ArrayList<EditText> = ArrayList()
         val editText1 = findViewById<EditText>(R.id.editText1)
         val editText2 = findViewById<EditText>(R.id.editText2)
         val editText3 = findViewById<EditText>(R.id.editText3)
@@ -44,6 +54,7 @@ class MainActivity : AppCompatActivity(), SortCompletionListener{
         val editText6 = findViewById<EditText>(R.id.editText6)
         val editText7 = findViewById<EditText>(R.id.editText7)
         val editText8 = findViewById<EditText>(R.id.editText8)
+        val speedSpinner = findViewById<Spinner>(R.id.speed_spinner)
 
         editTextViews.add(editText1)
         editTextViews.add(editText2)
@@ -53,6 +64,61 @@ class MainActivity : AppCompatActivity(), SortCompletionListener{
         editTextViews.add(editText6)
         editTextViews.add(editText7)
         editTextViews.add(editText8)
+
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        val adapter: ArrayAdapter<CharSequence> = object : ArrayAdapter<CharSequence>(
+            this, android.R.layout.simple_spinner_item, resources.getStringArray(R.array.speed_array)
+        ) {
+            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = super.getView(position, convertView, parent) as TextView
+                view.setTextColor(Color.WHITE) // Set the text color to white
+                return view
+            }
+
+            override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = super.getDropDownView(position, convertView, parent) as TextView
+                view.setTextColor(Color.WHITE) // Set the dropdown text color to white
+                view.setBackgroundColor(Color.BLACK)
+                return view
+            }
+        }
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        // Apply the adapter to the spinner
+        speedSpinner.adapter = adapter
+        // Find the position of "Normal" in the adapter
+        val defaultSelectionPosition = adapter.getPosition("Normal")
+
+        // Set the default selection of the spinner to "Normal"
+        speedSpinner.setSelection(defaultSelectionPosition)
+        speedSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                // Get the selected item
+
+                // Do something with the selected item
+                when (parent.getItemAtPosition(position).toString()) {
+                    "Very Slow" -> {
+                        Speed.speed = 1
+                    }
+                    "Slow" -> {
+                        Speed.speed = 3
+                    }
+                    "Normal" -> {
+                        Speed.speed = 5
+                    }
+                    "Fast" -> {
+                        Speed.speed = 10
+                    }
+                    "Very Fast" -> {
+                        Speed.speed = 20
+                    }
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Handle the case where there's no item selected
+            }
+        }
 
 
         spinner = findViewById(R.id.spinner)
@@ -90,6 +156,11 @@ class MainActivity : AppCompatActivity(), SortCompletionListener{
 
 
     }
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.toolbar_menu, menu)
+        return true
+    }
+
 
     //FULL SCREEN FUNCTIONS
     //{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
@@ -124,24 +195,24 @@ class MainActivity : AppCompatActivity(), SortCompletionListener{
     //END OF FULL SCREEN FUNCTIONS
     //}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
 //function giving random values to edit text areas
-    fun setRandomNumbersToTextViews(editTextViews:ArrayList<EditText>){
-        var numbers = getRandomNumbers(8)
+    private fun setRandomNumbersToTextViews(editTextViews:ArrayList<EditText>){
+        val numbers = getRandomNumbers(8)
         for(i in (0..7)){
-            editTextViews[i].setText("" + numbers[i])
+            editTextViews[i].setText(numbers[i].toString())
         }
     }
     //Following two functions for obtaining random numbers "getRandomNumbers","rand"
     //{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
 
-    fun getRandomNumbers(arraySize:Int):ArrayList<Int>{
-        var numbersArrayList:ArrayList<Int> = ArrayList()
-        for(i in 0..(arraySize-1)){
-            var temp = rand(1,99)
+    private fun getRandomNumbers(arraySize:Int):ArrayList<Int>{
+        val numbersArrayList:ArrayList<Int> = ArrayList()
+        for(i in 0 until arraySize){
+            val temp = rand(1,99)
             numbersArrayList.add(temp)
         }
         return numbersArrayList;
     }
-    fun rand(start: Int, end: Int): Int {
+    private fun rand(start: Int, end: Int): Int {
         require(start <= end) { "Illegal Argument" }
         return (start..end).random()
     }
