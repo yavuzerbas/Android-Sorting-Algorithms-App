@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity(), SortCompletionListener{
     //connection views with xml ids
     private lateinit var buttonStartSorting:Button
     private lateinit var buttonRandomizeNumbers:Button
+    private lateinit var spinner:Spinner
     private val isSortingCompleted = MutableLiveData<Boolean>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,10 +26,12 @@ class MainActivity : AppCompatActivity(), SortCompletionListener{
             if (isCompleted) {
                 buttonRandomizeNumbers.isEnabled = true
                 buttonStartSorting.isEnabled = true
+                spinner.isEnabled = true
             }
             else{
                 buttonRandomizeNumbers.isEnabled = false
                 buttonStartSorting.isEnabled = false
+                spinner.isEnabled = false
             }
         })
 
@@ -52,7 +55,7 @@ class MainActivity : AppCompatActivity(), SortCompletionListener{
         editTextViews.add(editText8)
 
 
-        val spinner:Spinner = findViewById(R.id.spinner)
+        spinner = findViewById(R.id.spinner)
         buttonStartSorting = findViewById(R.id.buttonStartSorting)
         buttonRandomizeNumbers = findViewById(R.id.buttonRandomizeNumbers)
 
