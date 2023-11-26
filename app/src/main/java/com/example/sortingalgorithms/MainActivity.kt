@@ -23,11 +23,11 @@ import com.example.sortingalgorithms.utils.extensions.SortCompletionListener
 import com.example.sortingalgorithms.utils.extensions.Speed
 
 
-class MainActivity : AppCompatActivity(), SortCompletionListener{
+class MainActivity : AppCompatActivity(), SortCompletionListener {
     //connection views with xml ids
-    private lateinit var buttonStartSorting:Button
-    private lateinit var buttonRandomizeNumbers:Button
-    private lateinit var spinner:Spinner
+    private lateinit var buttonStartSorting: Button
+    private lateinit var buttonRandomizeNumbers: Button
+    private lateinit var spinner: Spinner
     private val isSortingCompleted = MutableLiveData<Boolean>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,15 +37,14 @@ class MainActivity : AppCompatActivity(), SortCompletionListener{
                 buttonRandomizeNumbers.isEnabled = true
                 buttonStartSorting.isEnabled = true
                 spinner.isEnabled = true
-            }
-            else{
+            } else {
                 buttonRandomizeNumbers.isEnabled = false
                 buttonStartSorting.isEnabled = false
                 spinner.isEnabled = false
             }
         })
 
-        val editTextViews:ArrayList<EditText> = ArrayList()
+        val editTextViews: ArrayList<EditText> = ArrayList()
         val editText1 = findViewById<EditText>(R.id.editText1)
         val editText2 = findViewById<EditText>(R.id.editText2)
         val editText3 = findViewById<EditText>(R.id.editText3)
@@ -67,7 +66,9 @@ class MainActivity : AppCompatActivity(), SortCompletionListener{
 
         // Create an ArrayAdapter using the string array and a default spinner layout
         val adapter: ArrayAdapter<CharSequence> = object : ArrayAdapter<CharSequence>(
-            this, android.R.layout.simple_spinner_item, resources.getStringArray(R.array.speed_array)
+            this,
+            android.R.layout.simple_spinner_item,
+            resources.getStringArray(R.array.speed_array)
         ) {
             override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
                 val view = super.getView(position, convertView, parent) as TextView
@@ -75,7 +76,11 @@ class MainActivity : AppCompatActivity(), SortCompletionListener{
                 return view
             }
 
-            override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+            override fun getDropDownView(
+                position: Int,
+                convertView: View?,
+                parent: ViewGroup
+            ): View {
                 val view = super.getDropDownView(position, convertView, parent) as TextView
                 view.setTextColor(Color.WHITE) // Set the dropdown text color to white
                 view.setBackgroundColor(Color.BLACK)
@@ -92,7 +97,12 @@ class MainActivity : AppCompatActivity(), SortCompletionListener{
         // Set the default selection of the spinner to "Normal"
         speedSpinner.setSelection(defaultSelectionPosition)
         speedSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
                 // Get the selected item
 
                 // Do something with the selected item
@@ -100,15 +110,19 @@ class MainActivity : AppCompatActivity(), SortCompletionListener{
                     "Very Slow" -> {
                         Speed.speed = 1
                     }
+
                     "Slow" -> {
                         Speed.speed = 3
                     }
+
                     "Normal" -> {
                         Speed.speed = 5
                     }
+
                     "Fast" -> {
                         Speed.speed = 10
                     }
+
                     "Very Fast" -> {
                         Speed.speed = 20
                     }
@@ -128,21 +142,20 @@ class MainActivity : AppCompatActivity(), SortCompletionListener{
         buttonStartSorting.setOnClickListener(View.OnClickListener {
             //Bubble Sort is selected in spinner
             isSortingCompleted.postValue(false)
-            if(spinner.selectedItem.toString() == "Noob Sort"){
-                NoobSort(editTextViews,this).start()
-            }
-            else if(spinner.selectedItem.toString() == "Selection Sort"){
-                SelectionSort(editTextViews,this).start()
-            }
-            else if(spinner.selectedItem.toString() == "Insertion Sort"){
-                InsertionSort(editTextViews,this).start()
-            }
-            else if(spinner.selectedItem.toString() == "Bubble Sort"){
-                BubbleSort(editTextViews,this).start()
-            }
-
-            else{
-                Toast.makeText(applicationContext,"Only SelectionSort,InsertionSort,BubbleSort and NoobBubbleSort works!",Toast.LENGTH_LONG).show()
+            if (spinner.selectedItem.toString() == "Noob Sort") {
+                NoobSort(editTextViews, this).start()
+            } else if (spinner.selectedItem.toString() == "Selection Sort") {
+                SelectionSort(editTextViews, this).start()
+            } else if (spinner.selectedItem.toString() == "Insertion Sort") {
+                InsertionSort(editTextViews, this).start()
+            } else if (spinner.selectedItem.toString() == "Bubble Sort") {
+                BubbleSort(editTextViews, this).start()
+            } else {
+                Toast.makeText(
+                    applicationContext,
+                    "Only SelectionSort,InsertionSort,BubbleSort and NoobBubbleSort works!",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         })
 
@@ -153,9 +166,8 @@ class MainActivity : AppCompatActivity(), SortCompletionListener{
         })
 
 
-
-
     }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.toolbar_menu, menu)
         return true
@@ -192,26 +204,28 @@ class MainActivity : AppCompatActivity(), SortCompletionListener{
                 or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
     }
+
     //END OF FULL SCREEN FUNCTIONS
     //}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
 //function giving random values to edit text areas
-    private fun setRandomNumbersToTextViews(editTextViews:ArrayList<EditText>){
+    private fun setRandomNumbersToTextViews(editTextViews: ArrayList<EditText>) {
         val numbers = getRandomNumbers(8)
-        for(i in (0..7)){
+        for (i in (0..7)) {
             editTextViews[i].setText(numbers[i].toString())
         }
     }
     //Following two functions for obtaining random numbers "getRandomNumbers","rand"
     //{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
 
-    private fun getRandomNumbers(arraySize:Int):ArrayList<Int>{
-        val numbersArrayList:ArrayList<Int> = ArrayList()
-        for(i in 0 until arraySize){
-            val temp = rand(1,99)
+    private fun getRandomNumbers(arraySize: Int): ArrayList<Int> {
+        val numbersArrayList: ArrayList<Int> = ArrayList()
+        for (i in 0 until arraySize) {
+            val temp = rand(1, 99)
             numbersArrayList.add(temp)
         }
         return numbersArrayList;
     }
+
     private fun rand(start: Int, end: Int): Int {
         require(start <= end) { "Illegal Argument" }
         return (start..end).random()
